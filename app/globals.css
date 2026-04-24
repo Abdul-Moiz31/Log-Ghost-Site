@@ -1,0 +1,174 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #0f0f11;
+  --surface: #17171a;
+  --border: #2a2a2f;
+  --text: #f0f0f2;
+  --muted: #8b8b9a;
+  --accent: #7f77dd;
+  --critical: #e24b4a;
+  --warn: #ef9f27;
+  --safe: #639922;
+  --purple: #1a1830;
+  --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply min-h-screen antialiased text-[#f0f0f2] text-base leading-[1.7] font-sans;
+  background: var(--bg);
+}
+
+/* Layered background: vignette, purple glow, subtle grid (no hard gradients on content) */
+.page-shell {
+  @apply relative min-h-screen;
+  background-color: #0c0b0e;
+  background-image:
+    radial-gradient(ellipse 100% 70% at 50% -15%, rgba(127, 119, 221, 0.14), transparent 55%),
+    radial-gradient(ellipse 60% 50% at 100% 20%, rgba(34, 211, 238, 0.05), transparent 50%),
+    linear-gradient(180deg, #080809 0%, #0f0f11 32%, #0e0d10 100%);
+}
+
+.page-shell::before {
+  content: "";
+  @apply pointer-events-none fixed inset-0 z-0;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: radial-gradient(ellipse 85% 65% at 50% 15%, #000 20%, transparent 70%);
+  opacity: 0.55;
+}
+
+@layer components {
+  .link-muted {
+    @apply text-[#8b8b9a] no-underline font-medium text-[0.9rem] transition-colors duration-200 relative;
+  }
+  .link-muted::after {
+    content: "";
+    @apply absolute left-0 -bottom-0.5 h-px w-0 bg-[#7F77DD] transition-all duration-300 ease-out;
+  }
+  .link-muted:hover {
+    @apply text-[#f0f0f2];
+  }
+  .link-muted:hover::after {
+    @apply w-full;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center font-medium rounded-full px-[1.15rem] py-[0.55rem] text-[0.9rem] border border-[#2a2a2f] bg-[#17171a] text-[#f0f0f2] no-underline transition-all duration-200 cursor-pointer;
+  }
+  .btn:hover {
+    @apply -translate-y-0.5;
+  }
+  .btn:active {
+    @apply translate-y-0 scale-[0.99];
+  }
+  .btn-primary {
+    @apply border-[#7F77DD] bg-[#7F77DD] text-white;
+  }
+  .btn-primary:hover {
+    @apply border-[#6e66d4] bg-[#6e66d4] shadow-[0_6px_24px_rgba(127,119,221,0.25)];
+  }
+  .btn-ghost {
+    @apply border-[#2a2a2f] bg-transparent;
+  }
+  .btn-ghost:hover {
+    @apply bg-[#17171a] border-[#8b8b9a] shadow-sm;
+  }
+  .btn-lg {
+    @apply px-6 py-3 text-[0.95rem];
+  }
+  .wrap {
+    @apply max-w-[1120px] mx-auto px-5;
+  }
+  /* Scroll reveal: smooth deceleration */
+  .reveal {
+    @apply opacity-0 translate-y-4;
+    transition:
+      opacity 0.65s var(--ease-out-expo),
+      transform 0.65s var(--ease-out-expo);
+    will-change: opacity, transform;
+  }
+  .reveal--subtle {
+    @apply translate-y-2;
+    transition-duration: 0.55s;
+  }
+  .reveal--scale {
+    @apply scale-[0.98] translate-y-3;
+  }
+  .reveal.is-in {
+    @apply opacity-100 translate-y-0 scale-100;
+  }
+  .reveal--scale.is-in {
+    @apply scale-100;
+  }
+  .code-mock .tok .v { color: #82aaff; }
+  .code-mock .tok .s { color: #c3e88d; }
+  .code-mock .tok .fn { color: #82aaff; }
+  .code-mock .tok .p { color: #f78c6c; }
+  .code-mock .tok .k { color: #c792ea; }
+  .feature-card {
+    @apply transition-all duration-300 ease-out;
+  }
+  .feature-card:hover {
+    @apply -translate-y-1 border-[#7F77DD]/40 shadow-[0_8px_32px_rgba(0,0,0,0.35)];
+  }
+  .how-line {
+    transform-origin: left center;
+  }
+  .how-line-inner {
+    transform: scaleX(0);
+    transition: transform 1.1s var(--ease-out-expo);
+  }
+  .reveal.is-in .how-line-inner {
+    transform: scaleX(1);
+  }
+}
+
+@layer utilities {
+  .animation-delay-100 { animation-delay: 100ms; }
+  .animation-delay-200 { animation-delay: 200ms; }
+  .animation-delay-300 { animation-delay: 300ms; }
+  .animation-delay-400 { animation-delay: 400ms; }
+  .animation-delay-500 { animation-delay: 500ms; }
+  .animation-delay-600 { animation-delay: 600ms; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    @apply opacity-100 translate-y-0 scale-100;
+    transition: none;
+    will-change: auto;
+  }
+  .reveal.is-in .how-line-inner {
+    transform: scaleX(1);
+  }
+  .link-muted::after {
+    @apply w-0;
+  }
+  .btn {
+    @apply transform-none;
+  }
+  .btn:hover {
+    @apply transform-none;
+  }
+  .feature-card:hover {
+    @apply transform-none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+  .animation-delay-100,
+  .animation-delay-200,
+  .animation-delay-300,
+  .animation-delay-400,
+  .animation-delay-500,
+  .animation-delay-600 {
+    animation-delay: 0ms;
+  }
+}
