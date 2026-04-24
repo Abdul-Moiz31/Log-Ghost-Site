@@ -1,6 +1,6 @@
 # Log Ghost — marketing site (Next.js)
 
-This app renders the landing page from **`../Log-Ghost-extension/data/logghost.json`**. Edit that file to change copy, stats, links, and theme tokens.
+Landing page data lives in **[`data/logghost.json`](./data/logghost.json)** (imported at build time). This file must be in the **same repo** you deploy to Vercel (the site no longer depends on a sibling `Log-Ghost-extension` folder).
 
 ## Commands
 
@@ -12,19 +12,20 @@ npm run build
 npm start      # production server
 ```
 
-## Deploy
+## Deploy (Vercel)
 
-- **Vercel / Netlify:** set the project root to `Log-Ghost-Website` and use the default Next.js build.
-- **Static export (optional):** add `output: "export"` to `next.config.ts` if you need a fully static `out/` for hosting without a Node server.
+- **Root directory:** the folder that contains this `package.json` (often the repo root if the site is the whole repo).
+- **Build:** `npm run build` (default) · **Output:** Next.js.
+- **Env:** set `NEXT_PUBLIC_SITE_URL` to your production URL (e.g. `https://www.yoursite.com`) for correct `metadataBase` and Open Graph image URLs. Optional: Vercel sets `VERCEL_URL` for preview deployments.
 
 ## Logo
 
 - **`public/log-ghost-purple.svg`** — Mark used in the UI (purple squircle, white ghost, purple→cyan trail). Edit the SVG to tweak.
-- **`public/log-ghost-logo.png`** — Copied from the extension `docs/assets` for Open Graph / fallbacks.
+- **`public/log-ghost-logo.png`** — For Open Graph / social previews.
 
 ## License
 
-MIT — see [../LICENSE](../LICENSE) in the repository root (same terms as the extension).
+MIT — if this repo is only the site, add a `LICENSE` file or point to your main project’s license.
 
 ## Package name
 
